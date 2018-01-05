@@ -6,13 +6,13 @@ const knex= require('../knex')
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   knex('users')
-.select(
-  'id',
-  'email'
-)
-.then(function(data){
-  res.send(data)
-})
+    .select(
+      'id',
+      'email'
+    )
+    .then(function(data){
+      res.send(data)
+    })
 })
 
 
