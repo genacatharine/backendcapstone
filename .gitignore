@@ -59,3 +59,7 @@ typings/
 
 # For macOS
 .DS_Store
+
+# Ignore the lock files
+package-lock.json
+yarn.lock
