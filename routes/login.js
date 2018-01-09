@@ -3,7 +3,7 @@ const router = express.Router()
 const knex = require('../knex')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const secret = process.env.JWT_KEY
+const SECRET = process.env.JWT_KEY
 
 router.post('/', (req, res, next) => {
   const {
