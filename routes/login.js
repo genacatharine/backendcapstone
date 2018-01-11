@@ -29,7 +29,6 @@ router.post('/', (req, res, next) => {
   console.log('test2')
 
   if (email.includes('@')) {
-    // console.log('YOU ARE HERE')
     console.log('email', email);
     knex('users')
       .where('email', email)
@@ -38,23 +37,21 @@ router.post('/', (req, res, next) => {
         if (!data) {
           res.sendStatus(404)
         }
-        // console.log('IF EMAIL INCLDUES', data)
-        // console.log('data is', data)
+
         let match = bcrypt.compareSync(password, data.hashed_password)
-        // console.log('JWT KEY', process.env.JWT_KEY)
-        // console.log('match is', match)
-        // console.log()
+
         if (!match) {
           res.sendStatus(404)
           return
         }
-        // console.log(
-        //   'SECRET IS', SECRET)
+
         let token = jwt.sign({
+          usersId: data.users_id,
           data: data[0]
         }, SECRET);
-        console.log(token);
+
         res.send({token: token});
+          // console.log('token', token);
           // res.json(token);
           // res.send('token', token,
           //   { httpOnly: true }
