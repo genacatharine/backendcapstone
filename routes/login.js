@@ -7,6 +7,8 @@ require('dotenv').config()
 const SECRET = process.env.JWT_KEY
 
 router.post('/', (req, res, next) => {
+  // console.log('test')
+  // console.log(req.body)
   const {
     email,
     password
@@ -24,15 +26,24 @@ router.post('/', (req, res, next) => {
     return
   }
 
+  console.log('test2')
+
   if (email.includes('@')) {
+    // console.log('YOU ARE HERE')
+    console.log('email', email);
     knex('users')
       .where('email', email)
       .first()
       .then((data) => {
+        if (!data) {
+          res.sendStatus(404)
+        }
+        // console.log('IF EMAIL INCLDUES', data)
         // console.log('data is', data)
         let match = bcrypt.compareSync(password, data.hashed_password)
         // console.log('JWT KEY', process.env.JWT_KEY)
         // console.log('match is', match)
+        // console.log()
         if (!match) {
           res.sendStatus(404)
           return
@@ -41,17 +52,24 @@ router.post('/', (req, res, next) => {
         //   'SECRET IS', SECRET)
         let token = jwt.sign({
           data: data[0]
-          }, SECRET)
-
-        res.cookie('token', token,
-          { httpOnly: true }
-        )
+        }, SECRET);
+        console.log(token);
+        res.send({token: token});
+          // res.json(token);
+          // res.send('token', token,
+          //   { httpOnly: true }
+        // res.cookie('token', token,
+        //   { httpOnly: true }
+        // );
         res.status(200)
         delete data.hashed_password
-        res.send(data)
+        // res.send(data)
         return
       })
       .catch((err) => next(err))
+  }
+  else {
+    console.log('test4')
   }
 })
 
