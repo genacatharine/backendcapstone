@@ -26,8 +26,6 @@ router.post('/', (req, res, next) => {
     return
   }
 
-  console.log('test2')
-
   if (email.includes('@')) {
     console.log('email', email);
     knex('users')
@@ -51,7 +49,7 @@ router.post('/', (req, res, next) => {
         }, SECRET);
 
         res.send({token: token});
-          console.log('token', token);
+          // console.log('token', token);
           // res.json(token);
           // res.send('token', token,
           //   { httpOnly: true }
@@ -66,12 +64,12 @@ router.post('/', (req, res, next) => {
       .catch((err) => next(err))
   }
   else {
-    console.log('test4')
+    // console.log('test4')
   }
 })
 
 router.delete('/', (req, res, next) => {
-  console.log('cookie-cleared. logged out')
+  // console.log('cookie-cleared. logged out')
   res.clearCookie('token')
   res.sendStatus(200)
 })
