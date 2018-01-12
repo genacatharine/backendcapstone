@@ -46,12 +46,12 @@ router.post('/', (req, res, next) => {
         }
 
         let token = jwt.sign({
-          usersId: data.users_id,
-          data: data[0]
+          usersid: data.id,
+          data: data
         }, SECRET);
 
         res.send({token: token});
-          // console.log('token', token);
+          console.log('token', token);
           // res.json(token);
           // res.send('token', token,
           //   { httpOnly: true }
