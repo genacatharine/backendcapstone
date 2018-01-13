@@ -5,11 +5,13 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const SECRET = process.env.JWT_KEY
+var jwtDecode = require('jwt-decode');
 
 router.post('/:id', (req, res, next) => {
-  
-  console.log('receving from front end', req.body.clientToken)
-  // let user_id = req.payload.usersId
+
+  console.log('RECEIVING FROM FRONTEND', req.body.clientToken)
+
+  let user_id = req.body.clientToken
   // knex('tohikelist')
   // .insert({
   //   user_id: decod,
