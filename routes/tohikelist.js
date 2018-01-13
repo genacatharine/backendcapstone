@@ -10,14 +10,15 @@ var jwtDecode = require('jwt-decode');
 router.post('/:id', (req, res, next) => {
 
   console.log('RECEIVING FROM FRONTEND', req.body.clientToken)
-
+  console.log('RECEIVING FROM FRONTEND', req.body.hikeid)
   let uid = req.body.clientToken
-  
+  let hid= req.body.hikeid
+
 
   knex('tohikelist')
   .insert({
     users_id: uid,
-    hike_id: 4,
+    hike_id: hid,
   }, '*')
   .then(() => {
     res.sendStatus(200)
