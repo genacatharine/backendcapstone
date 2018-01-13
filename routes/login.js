@@ -7,8 +7,9 @@ require('dotenv').config()
 const SECRET = process.env.JWT_KEY
 
 router.post('/', (req, res, next) => {
+
   // console.log('test')
-  // console.log(req.body)
+
   const {
     email,
     password
@@ -26,8 +27,11 @@ router.post('/', (req, res, next) => {
     return
   }
 
+  console.log('test2')
+
   if (email.includes('@')) {
-    console.log('email', email);
+
+    // console.log('email', email);
     knex('users')
       .where('email', email)
       .first()
@@ -35,21 +39,24 @@ router.post('/', (req, res, next) => {
         if (!data) {
           res.sendStatus(404)
         }
-
+        // console.log('IF EMAIL INCLDUES', data)
+        // console.log('data is', data)
         let match = bcrypt.compareSync(password, data.hashed_password)
-
+        // console.log('JWT KEY', process.env.JWT_KEY)
+        // console.log('match is', match)
+        // console.log()
         if (!match) {
           res.sendStatus(404)
           return
         }
-
+        // console.log(
+        //   'SECRET IS', SECRET)
         let token = jwt.sign({
-          usersid: data.id,
+          userId: data.id,
           data: data
         }, SECRET);
-
+        console.log('TOKEN', token);
         res.send({token: token});
-          // console.log('token', token);
           // res.json(token);
           // res.send('token', token,
           //   { httpOnly: true }
@@ -69,7 +76,7 @@ router.post('/', (req, res, next) => {
 })
 
 router.delete('/', (req, res, next) => {
-  // console.log('cookie-cleared. logged out')
+  console.log('cookie-cleared. logged out')
   res.clearCookie('token')
   res.sendStatus(200)
 })
