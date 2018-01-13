@@ -11,13 +11,17 @@ router.post('/:id', (req, res, next) => {
 
   console.log('RECEIVING FROM FRONTEND', req.body.clientToken)
 
-  let user_id = req.body.clientToken
-  // knex('tohikelist')
-  // .insert({
-  //   user_id: decod,
-  //   hike_id: req.body.hike_id
-  // }, '*')
-  // .then((data) => {
+  let uid = req.body.clientToken
+  
+
+  knex('tohikelist')
+  .insert({
+    users_id: uid,
+    hike_id: 4,
+  }, '*')
+  .then(() => {
+    res.sendStatus(200)
+  })
   //   let newObj = {
   //     'id': data[0].id,
   //     'user_id': data[0].user_id,
