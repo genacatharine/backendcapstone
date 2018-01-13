@@ -8,12 +8,10 @@ const SECRET = process.env.JWT_KEY
 var jwtDecode = require('jwt-decode');
 
 router.post('/:id', (req, res, next) => {
-
-  console.log('RECEIVING FROM FRONTEND', req.body.clientToken)
-  console.log('RECEIVING FROM FRONTEND', req.body.hikeid)
+  // console.log('RECEIVING FROM FRONTEND', req.body.clientToken)
+  // console.log('RECEIVING FROM FRONTEND', req.body.hikeid)
   let uid = req.body.clientToken
   let hid= req.body.hikeid
-
 
   knex('tohikelist')
   .insert({
@@ -35,9 +33,20 @@ router.post('/:id', (req, res, next) => {
   //   next(err);
   // });
 })
-router.get('/', (req, res, next)=>{
-  console.log('hello routerget')
-})
+// router.get('/', function(req, res, next) {
+//   let uid = req.body.clientToken
+//   knex('tohikelist')
+//     // .select('id', 'users_id')
+//     .where('users_id', uid)
+//     .then((data) => {
+//         return res.send(data)
+//
+//       res.setHeader('Content-Type', 'application/json')
+//       res.send(JSON.stringify(data))
+//     })
+//     .catch((err) => next(err))
+//   })
+
 
 
 module.exports = router;
