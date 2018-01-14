@@ -40,9 +40,10 @@ router.post('/:id', (req, res, next) => {
   // });
 })
 router.get('/', function(req, res, next) {
-  // console.log(req, res, next)
+  console.log('attempt to get', req, res, next)
 
-  // let uid = req.body.clientToken
+  let uid = req.body.clientToken
+  console.log('UID', uid)
   knex('tohikelist')
     .select('users_id', 'hike_id')
     .where('users_id', uid)
