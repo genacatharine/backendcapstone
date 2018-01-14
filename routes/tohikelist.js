@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const SECRET = process.env.JWT_KEY
-var jwtDecode = require('jwt-decode');
 
 router.post('/:id', (req, res, next) => {
   let uid = req.body.clientToken
@@ -21,18 +20,26 @@ router.post('/:id', (req, res, next) => {
 
 })
 
-router.get('/', function(req, res, next) {
-  var token = req.body.clientToken
-  console.log('TOKEN ON BACKEND', token)
-  knex('tohikelist')
-    .select('users_id', 'hike_id', 'hike_name')
-    .where('users_id', uid)
-    .then((data) => {
-    return res.send(data)
+router.get('/', (req, res, next) => {
 
-    // res.setHeader('Content-Type', 'application/json')
-    // res.send(JSON.stringify(data))
-  }).catch((err) => next(err))
+  const token = req.headers.authorization
+
+  console.log('TOKEN ON BACKEND', token)
+
+  const decoded = jwt.verify(token, SECRET);
+
+  console.log('decoded jwt: ', decoded);
+
+  knex('tohikelist')
+    // .select('users_id', 'hike_id', 'hike_name')
+    .where('users_id', decoded.userId)
+    .then((data) => {
+      console.log(data);
+      // console.log('DATA',data)
+    res.json(data)
+
+  })
+  .catch((err) => next(err))
 })
 
 module.exports = router;
