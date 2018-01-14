@@ -55,7 +55,7 @@ router.post('/', (req, res, next) => {
           userId: data.id,
           data: data
         }, SECRET);
-        console.log('TOKEN', token);
+        // console.log('TOKEN', token);
         res.send({token: token});
           // res.json(token);
           // res.send('token', token,
