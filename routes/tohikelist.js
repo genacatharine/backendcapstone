@@ -8,14 +8,20 @@ const SECRET = process.env.JWT_KEY
 var jwtDecode = require('jwt-decode');
 
 router.post('/:id', (req, res, next) => {
+  // console.log(req, res, next)
   // console.log('RECEIVING FROM FRONTEND', req.body.clientToken)
   // console.log('RECEIVING FROM FRONTEND', req.body.hikeid)
   let uid = req.body.clientToken
-  let hid= req.body.hikeid
+  let hid= req.body.id
+  let name=req.body.name
+  console.log(hid)
+  console.log(req.body)
+  console.log(req.body.name);
 
   knex('tohikelist')
   .insert({
     users_id: uid,
+    hike_name: name,
     hike_id: hid,
   }, '*')
   .then(() => {
@@ -33,19 +39,21 @@ router.post('/:id', (req, res, next) => {
   //   next(err);
   // });
 })
-// router.get('/', function(req, res, next) {
-//   let uid = req.body.clientToken
-//   knex('tohikelist')
-//     // .select('id', 'users_id')
-//     .where('users_id', uid)
-//     .then((data) => {
-//         return res.send(data)
-//
-//       res.setHeader('Content-Type', 'application/json')
-//       res.send(JSON.stringify(data))
-//     })
-//     .catch((err) => next(err))
-//   })
+router.get('/', function(req, res, next) {
+  // console.log(req, res, next)
+
+  // let uid = req.body.clientToken
+  knex('tohikelist')
+    .select('users_id', 'hike_id')
+    .where('users_id', uid)
+    .then((data) => {
+        return res.send(data)
+
+      res.setHeader('Content-Type', 'application/json')
+      res.send(JSON.stringify(data))
+    })
+    .catch((err) => next(err))
+  })
 
 
 
