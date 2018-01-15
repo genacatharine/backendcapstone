@@ -24,22 +24,30 @@ router.get('/', (req, res, next) => {
 
   const token = req.headers.authorization
 
-  console.log('TOKEN ON BACKEND', token)
-
   const decoded = jwt.verify(token, SECRET);
 
-  console.log('decoded jwt: ', decoded);
-
-  knex('tohikelist')
-    // .select('users_id', 'hike_id', 'hike_name')
-    .where('users_id', decoded.userId)
-    .then((data) => {
-      console.log(data);
-      // console.log('DATA',data)
+  knex('tohikelist').where('users_id', decoded.userId).then((data) => {
+    console.log(data);
     res.json(data)
 
-  })
-  .catch((err) => next(err))
+  }).catch((err) => next(err))
+})
+
+router.delete('/:id', (req, res, next) => {
+  const id = req.params.id
+  console.log('ID', id)
+  // knex('tohikelist')
+  //   .where('title', asst)
+  //   .first()
+  //   .then(({id, title}) => {
+  //     return knex('helps')
+  //       .del()
+  //       .where('hike_id': hid)
+  //       .andWhere('user_id', decoded.userId)
+  //       .returning('assignment_id')
+  //   }).then((data) => {
+  //     res.send(data)
+  //   }).catch((err) => next(err))
 })
 
 module.exports = router;
