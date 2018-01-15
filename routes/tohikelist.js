@@ -10,10 +10,13 @@ router.post('/:id', (req, res, next) => {
   let uid = req.body.clientToken
   let hid = req.body.id
   let name = req.body.name
+  let thumbnail = req.body.thumbnailUrl
+  console.log('thumbnail: ', thumbnail)
   knex('tohikelist').insert({
     users_id: uid,
     hike_name: name,
-    hike_id: hid
+    hike_id: hid,
+    thumbnail_url: thumbnail
   }, '*').then(() => {
     res.sendStatus(200)
   })
@@ -27,7 +30,7 @@ router.get('/', (req, res, next) => {
   const decoded = jwt.verify(token, SECRET);
 
   knex('tohikelist').where('users_id', decoded.userId).then((data) => {
-    console.log(data);
+    // console.log(data);
     res.json(data)
 
   }).catch((err) => next(err))
