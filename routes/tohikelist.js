@@ -7,21 +7,25 @@ require('dotenv').config()
 const SECRET = process.env.JWT_KEY
 
 router.post('/:id', (req, res, next) => {
+  console.log('jkhsdfjsdfjhsdfhfdskhj')
   const decoded = jwt.verify(req.body.clientToken, SECRET);
-// console.log('DECODED', decoded.id);
+  console.log('DECODED', decoded);
+  console.log('thumbnail', req.body.thumbnailUrl)
   // let uid = req.body.clientToken
+  // (clientToken, hike_id, hikename)
   let hid = req.body.hike_id
   console.log('hikeid', hid);
-  let name = req.body.hike_name
-  let thumbnail = req.body.thumbnailUrl
+  let name = req.body.hikename
+  // let thumbnail = req.body.thumbnailUrl
+
   console.log('POST IMG req', req.body);
   // console.log('thumbnail: ', thumbnail)
   knex('tohikelist')
   .insert({
-    users_id: decoded.userId,
+    users_id: req.body.userId,
     hike_name: name,
     hike_id: hid,
-    img_thumbnail: thumbnail
+    // img_thumbnail: thumbnail
   }, '*').then(() => {
     res.sendStatus(200)
   })
