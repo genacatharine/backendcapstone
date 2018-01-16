@@ -7,30 +7,45 @@ require('dotenv').config()
 const SECRET = process.env.JWT_KEY
 
 router.post('/:id', (req, res, next) => {
-  console.log('jkhsdfjsdfjhsdfhfdskhj')
   const decoded = jwt.verify(req.body.clientToken, SECRET);
-  console.log('DECODED', decoded);
-  console.log('thumbnail', req.body.thumbnailUrl)
-  // let uid = req.body.clientToken
-  // (clientToken, hike_id, hikename)
+  // console.log('reqbody', req.body)
+  console.log('hikename', req.body.hikename);
+  console.log('hikename with underscore', req.body.hike_name );
+  // console.log('thumbnail', req.body.thumbnailUrl)
+  // console.log('userid', decoded.userId);
   let hid = req.body.hike_id
-  console.log('hikeid', hid);
-  let name = req.body.hikename
+  console.log('hikeid', req.body.hike_id);
+  // let name = req.body.hikename
   // let thumbnail = req.body.thumbnailUrl
 
-  console.log('POST IMG req', req.body);
   // console.log('thumbnail: ', thumbnail)
   knex('tohikelist')
   .insert({
-    users_id: req.body.userId,
-    hike_name: name,
+    // users_id: req.body.userId,
+    users_id: decoded.userId,
+    hike_name: req.body.hikename,
+    // hike_name: name,
     hike_id: hid,
-    // img_thumbnail: thumbnail
+    img_thumbnail: req.body.thumbnailUrl
   }, '*').then(() => {
     res.sendStatus(200)
   })
 
 })
+
+router.patch('/:id', (req, res, next) => {
+  const id= req.params.id
+  console.log('id', id);
+  console.log('thumbnail', req.body.thumbnailUrl);
+  knex('tohikelist')
+    .update({img_thumbnail: req.body.thumbnailUrl})
+    .where('id', id)
+    .then((data)=>{
+      res.sendStatus(200)
+      // .catch(err)
+    })
+})
+
 
 router.get('/', (req, res, next) => {
   const token = req.headers.authorization
