@@ -7,16 +7,21 @@ require('dotenv').config()
 const SECRET = process.env.JWT_KEY
 
 router.post('/:id', (req, res, next) => {
-  let uid = req.body.clientToken
-  let hid = req.body.id
-  let name = req.body.name
+  const decoded = jwt.verify(req.body.clientToken, SECRET);
+// console.log('DECODED', decoded.id);
+  // let uid = req.body.clientToken
+  let hid = req.body.hike_id
+  console.log('hikeid', hid);
+  let name = req.body.hike_name
   let thumbnail = req.body.thumbnailUrl
-  console.log('thumbnail: ', thumbnail)
-  knex('tohikelist').insert({
-    users_id: uid,
+  console.log('POST IMG req', req.body);
+  // console.log('thumbnail: ', thumbnail)
+  knex('tohikelist')
+  .insert({
+    users_id: decoded.userId,
     hike_name: name,
     hike_id: hid,
-    thumbnail_url: thumbnail
+    img_thumbnail: thumbnail
   }, '*').then(() => {
     res.sendStatus(200)
   })
@@ -24,21 +29,18 @@ router.post('/:id', (req, res, next) => {
 })
 
 router.get('/', (req, res, next) => {
-
   const token = req.headers.authorization
-
   const decoded = jwt.verify(token, SECRET);
-
-  knex('tohikelist').where('users_id', decoded.userId).then((data) => {
-    // console.log(data);
+  knex('tohikelist')
+  .where('users_id', decoded.userId)
+  .then((data) => {
     res.json(data)
-
   }).catch((err) => next(err))
 })
 
-router.delete('/:id', (req, res, next) => {
-  const id = req.params.id
-  console.log('ID', id)
+// router.delete('/:id', (req, res, next) => {
+//   const id = req.params.id
+//   console.log('ID', id)
   // knex('tohikelist')
   //   .where('title', asst)
   //   .first()
@@ -51,6 +53,6 @@ router.delete('/:id', (req, res, next) => {
   //   }).then((data) => {
   //     res.send(data)
   //   }).catch((err) => next(err))
-})
+// })
 
 module.exports = router;
