@@ -8,35 +8,22 @@ const SECRET = process.env.JWT_KEY
 
 router.post('/:id', (req, res, next) => {
   const decoded = jwt.verify(req.body.clientToken, SECRET);
-  // console.log('reqbody', req.body)
-  console.log('hikename', req.body.hikename);
-  console.log('hikename with underscore', req.body.hike_name );
-  // console.log('thumbnail', req.body.thumbnailUrl)
-  // console.log('userid', decoded.userId);
   let hid = req.body.hike_id
-  console.log('hikeid', req.body.hike_id);
   // let name = req.body.hikename
   // let thumbnail = req.body.thumbnailUrl
-
-  // console.log('thumbnail: ', thumbnail)
   knex('tohikelist')
   .insert({
-    // users_id: req.body.userId,
     users_id: decoded.userId,
     hike_name: req.body.hikename,
-    // hike_name: name,
     hike_id: hid,
     img_thumbnail: req.body.thumbnailUrl
   }, '*').then(() => {
     res.sendStatus(200)
   })
-
 })
 
 router.patch('/:id', (req, res, next) => {
   const id= req.params.id
-  console.log('id', id);
-  console.log('thumbnail', req.body.thumbnailUrl);
   knex('tohikelist')
     .update({img_thumbnail: req.body.thumbnailUrl}, '*')
     .where('id', id)
@@ -47,7 +34,6 @@ router.patch('/:id', (req, res, next) => {
       res.send(JSON.stringify(data[0]))
     })
 })
-
 
 router.get('/', (req, res, next) => {
   const token = req.headers.authorization
