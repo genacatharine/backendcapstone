@@ -38,11 +38,13 @@ router.patch('/:id', (req, res, next) => {
   console.log('id', id);
   console.log('thumbnail', req.body.thumbnailUrl);
   knex('tohikelist')
-    .update({img_thumbnail: req.body.thumbnailUrl})
+    .update({img_thumbnail: req.body.thumbnailUrl}, '*')
     .where('id', id)
     .then((data)=>{
-      res.sendStatus(200)
-      // .catch(err)
+      console.log('data: ', data[0]);
+      // console.log('objectkeys', Object.keys(data));
+      res.setHeader('Content-Type', 'application/json')
+      res.send(JSON.stringify(data[0]))
     })
 })
 
